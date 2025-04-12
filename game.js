@@ -17,6 +17,7 @@ let totalPointsText;
 let farmSpeed = 1; // per second
 let lastTick = 0;
 let isShopOpen = false; // Flag to track shop state
+let walletAddress = '';
 
 const availableUpgrades = [
     {
@@ -63,6 +64,22 @@ function preload() {
     //   console.error(`Failed to load: ${file.key}`);
     // });
 }
+
+async function connectWallet() {
+    // Check for Phantom Wallet
+    if (window.solana && window.solana.isPhantom) {
+        try {
+            const response = await window.solana.connect(); // Connect to Phantom Wallet
+            walletAddress = response.publicKey.toString(); // Get the wallet address
+            console.log(`Connected wallet: ${walletAddress}`);
+        } catch (error) {
+            console.error('User denied account access or error occurred:', error);
+        }
+    } else {
+        console.log('Please install Phantom Wallet!');
+    }
+}
+connectWallet();
 
 function create() {
     render.call(this);
@@ -187,7 +204,7 @@ function renderUI() {
 function update(time, delta) {
     if (time - lastTick > 1000) {
         totalPoints += farmSpeed;
-        totalPointsText.setText('$CLOUT ' + totalPoints);
+        totalPointsText.setText(`Wallet: ${walletAddress.toString().slice(0, 6)}... $CLOUT  + ${totalPoints}`);
         farmSpeedText.setText(farmSpeed + '/s');
         lastTick = time;
     }
