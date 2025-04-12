@@ -12,10 +12,11 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-let bitcoin = 0;
-let bitcoinText;
+let totalPoints = 0;
+let totalPointsText;
 let farmSpeed = 1; // per second
 let lastTick = 0;
+let isShopOpen = false; // Flag to track shop state
 
 const availableUpgrades = [
     {
@@ -30,19 +31,27 @@ const availableUpgrades = [
         id: 'computer_potato',
         name: 'Potato Computer',
         farmSpeedIncrease: 1,
-        cost: 100,
+        cost: 2,
         tileSlot: 'room2',
+        tilePosition: { x: 10, y: 10 }
+    },
+    {
+        id: 'car',
+        name: 'Red Car',
+        farmSpeedIncrease: 1,
+        cost: 100,
+        tileSlot: 'room3',
         tilePosition: { x: 7, y: 7 }
     }
 ];
 
-const playerOwnedUpgrades = ['computer_potato'];
+var playerOwnedUpgrades = ['car'];
 
 function preload() {
     this.load.image('roomfloor', 'assets/roomfloor.png');
     this.load.image('guy', 'assets/tile_0455.png');
-    this.load.image('computer', 'assets/tile_0455.png');
-    this.load.image('car', 'assets/tile_0453.png');
+    this.load.image('computer_potato', 'assets/computer.png');
+    this.load.image('car', 'assets/car.png');
     this.load.image('upgradeBtn', 'assets/tile_0480.png'); // placeholder for now
 
     // // Add error handling for image loading
@@ -56,6 +65,14 @@ function preload() {
 }
 
 function create() {
+    render.call(this);
+}
+
+function render() {
+    renderUpgrades.call(this);
+    renderUI.call(this);
+}
+function renderUpgrades() {
     //OBJECTS
     const tileSize = 16;
     for (let x = 0; x < 32; x++) {
@@ -69,25 +86,27 @@ function create() {
         console.log('upgrade:');
         console.log(upgrade);
 
-        this.add.image(upgrade.tilePosition.x * tileSize, upgrade.tilePosition.y * tileSize, 'car').setScale(2);
+        this.add.image(upgrade.tilePosition.x * tileSize, upgrade.tilePosition.y * tileSize, upgrade.id).setScale(2);
     }
+}
 
+function renderUI() {
     // UI
-    bitcoinText = this.add.text(20, 20, '₿ 0', {
+    totalPointsText = this.add.text(20, 20, '$CLOUT 0', {
         fontFamily: 'monospace',
         fontSize: '20px',
         color: '#00ff00'
     });
 
     farmSpeedText = this.add.text(20, 50, 'Farming Speed: ' + farmSpeed, {
-        // Use farmSpeed variable
         fontFamily: 'monospace',
         fontSize: '16px',
         color: '#00ff00'
     });
 
-    const upgradeButton = this.add
-        .text(20, 240, '💻 Upgrade (+1/sec)', {
+    // Shop Button
+    const shopButton = this.add
+        .text(20, 240, '🛒 Shop', {
             fontFamily: 'monospace',
             fontSize: '16px',
             backgroundColor: '#333',
@@ -96,28 +115,79 @@ function create() {
         })
         .setInteractive()
         .on('pointerover', () => {
-            upgradeButton.setStyle({ backgroundColor: '#555' }); // Change background on hover
+            shopButton.setStyle({ backgroundColor: '#555' }); // Change background on hover
         })
         .on('pointerout', () => {
-            upgradeButton.setStyle({ backgroundColor: '#333' }); // Revert background on hover out
+            shopButton.setStyle({ backgroundColor: '#333' }); // Revert background on hover out
         })
         .on('pointerdown', () => {
-            upgradeButton.setStyle({ backgroundColor: '#777' }); // Change background on click
-            farmSpeed += 1;
+            shopButton.setStyle({ backgroundColor: '#777' }); // Change background on click
+            if (isShopOpen) {
+                closeShop.call(this); // Call function to close shop
+            } else {
+                openShop.call(this); // Call function to open shop with correct context
+            }
+            isShopOpen = !isShopOpen; // Toggle shop state
         })
         .on('pointerup', () => {
-            upgradeButton.setStyle({ backgroundColor: '#555' }); // Revert background after click
+            shopButton.setStyle({ backgroundColor: '#555' }); // Revert background after click
         });
 
-    upgradeButton.on('pointerdown', () => {
-        farmSpeed += 1;
-    });
+    // Function to open the shop
+    const openShop = () => {
+        // Clear previous shop UI if it exists
+        this.children.each((child) => {
+            if (child.name === 'shopItem') {
+                child.destroy();
+            }
+        });
+
+        // Display available upgrades and allow purchasing
+        availableUpgrades.forEach((upgrade, index) => {
+            const upgradeText = this.add
+                .text(20, 80 + index * 30, `${upgrade.name} - Cost: ${upgrade.cost}`, {
+                    fontFamily: 'monospace',
+                    fontSize: '16px',
+                    color: '#00ff00'
+                })
+                .setName('shopItem');
+
+            upgradeText
+                .setInteractive()
+                .on('pointerover', () => {
+                    upgradeText.setStyle({ backgroundColor: '#555' }); // Change background on hover
+                })
+                .on('pointerout', () => {
+                    upgradeText.setStyle({ backgroundColor: 'transparent' }); // Revert background on hover out
+                })
+                .on('pointerdown', () => {
+                    if (totalPoints >= upgrade.cost) {
+                        totalPoints -= upgrade.cost; // Deduct cost from total points
+                        playerOwnedUpgrades.push(upgrade.id); // Add upgrade to owned upgrades
+                        console.log(`Purchased: ${upgrade.name}`);
+                        totalPointsText.setText('$CLOUT ' + totalPoints); // Update total points display
+                        render.call(this);
+                    } else {
+                        console.log(`Not enough points to purchase: ${upgrade.name}`);
+                    }
+                });
+        });
+    };
+
+    // Function to close the shop
+    const closeShop = () => {
+        this.children.each((child) => {
+            if (child.name === 'shopItem') {
+                child.destroy(); // Destroy shop items
+            }
+        });
+    };
 }
 
 function update(time, delta) {
     if (time - lastTick > 1000) {
-        bitcoin += farmSpeed;
-        bitcoinText.setText('₿ ' + bitcoin);
+        totalPoints += farmSpeed;
+        totalPointsText.setText('$CLOUT ' + totalPoints);
         farmSpeedText.setText(farmSpeed + '/s');
         lastTick = time;
     }
