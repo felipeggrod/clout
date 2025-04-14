@@ -1,8 +1,12 @@
 const config = {
     type: Phaser.AUTO,
-    width: 480,
-    height: 270,
+    width: 1200,
+    height: 400,
     pixelArt: true,
+    scale: {
+        mode: Phaser.Scale.FIT, // Center the game view
+        autoCenter: Phaser.Scale.CENTER_BOTH // Center both horizontally and vertically
+    },
     scene: {
         preload,
         create,
@@ -48,6 +52,22 @@ const availableUpgrades = [
 
 var playerOwnedUpgrades = ['car'];
 
+async function connectWallet() {
+    // Check for Phantom Wallet
+    if (window.solana && window.solana.isPhantom) {
+        try {
+            const response = await window.solana.connect(); // Connect to Phantom Wallet
+            walletAddress = response.publicKey.toString(); // Get the wallet address
+            console.log(`Connected wallet: ${walletAddress}`);
+        } catch (error) {
+            console.error('User denied account access or error occurred:', error);
+        }
+    } else {
+        console.log('Please install Phantom Wallet!');
+    }
+}
+connectWallet();
+
 function preload() {
     this.load.image('roomfloor', 'assets/roomfloor.png');
     this.load.image('guy', 'assets/tile_0455.png');
@@ -66,24 +86,12 @@ function preload() {
     // });
 }
 
-async function connectWallet() {
-    // Check for Phantom Wallet
-    if (window.solana && window.solana.isPhantom) {
-        try {
-            const response = await window.solana.connect(); // Connect to Phantom Wallet
-            walletAddress = response.publicKey.toString(); // Get the wallet address
-            console.log(`Connected wallet: ${walletAddress}`);
-        } catch (error) {
-            console.error('User denied account access or error occurred:', error);
-        }
-    } else {
-        console.log('Please install Phantom Wallet!');
-    }
-}
-connectWallet();
-
 function create() {
     render.call(this);
+
+    const borderThickness = 5; // Thickness of the border
+    const borderColor = 0xffffff; // White color for the border
+    this.add.graphics().lineStyle(borderThickness, borderColor).strokeRect(0, 0, config.width, config.height);
 }
 
 function render() {
@@ -93,7 +101,7 @@ function render() {
 function renderUpgrades() {
     //OBJECTS
     const tileSize = 16;
-    for (let x = 0; x < 32; x++) {
+    for (let x = 25; x < 50; x++) {
         for (let y = 0; y < 32; y++) {
             this.add.image(x * tileSize, y * tileSize, 'roomfloor');
         }
@@ -126,7 +134,7 @@ function renderUI() {
 
     // Shop Button
     const shopButton = this.add
-        .text(20, 240, '🛒 Shop', {
+        .text(20, 360, '🛒 Shop', {
             fontFamily: 'monospace',
             fontSize: '16px',
             backgroundColor: '#333',

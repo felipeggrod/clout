@@ -4,14 +4,19 @@
         <meta charset="UTF-8" />
         <title>Idle Bitcoin Farm</title>
         <style>
+            html,
             body {
                 margin: 0;
-                background: #000;
-                /* image-rendering: pixelated; */
+                height: 100%; /* Ensure body takes full height */
+                display: flex; /* Use flexbox to center the canvas */
+                justify-content: center; /* Center horizontally */
+                align-items: top; /* Center vertically */
+                background: #000; /* Background color */
             }
             canvas {
-                display: block;
-                margin: 0 auto;
+                display: block; /* Ensure canvas is a block element */
+                width: 1200px; /* Set to match game width */
+                height: 400px; /* Set to match game height */
             }
         </style>
     </head>
