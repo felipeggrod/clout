@@ -69,13 +69,55 @@ async function connectWallet() {
 connectWallet();
 
 function preload() {
-    this.load.image('roomfloor', 'assets/roomfloor.png');
-    this.load.image('guy', 'assets/tile_0455.png');
-    this.load.image('computer_potato', 'assets/computer.png');
-    this.load.image('green_screen', 'assets/greenscreen.png');
-    this.load.image('car', 'assets/car.png');
-    this.load.image('upgradeBtn', 'assets/tile_0480.png'); // placeholder for now
+    const imageNames = [
+        'vehicle_8_helicopter',
+        'vehicle_7_lamborghini',
+        'vehicle_6_sports_car',
+        'vehicle_5_suv',
+        'vehicle_4_sedan',
+        'vehicle_3_compact_car',
+        'vehicle_2_rusty_bike',
+        'vehicle_1_skateboard',
+        'phone_6_iphone_diamond',
+        'phone_5_iphone_modern',
+        'phone_4_flagship_android_ultra',
+        'phone_3_iphoneclassic',
+        'phone_2_old_nokia',
+        'phone_1_cracked_old_smartphone',
+        'house_10_crypto_mansion',
+        'house_9',
+        'house_8',
+        'house_7',
+        'house_6',
+        'house_5',
+        'house_4',
+        'house_3',
+        'house_2',
+        'house_1_cardboard_box',
+        'computer4_gaming_setup',
+        'computer_6_command_center',
+        'computer_5_mainframe',
+        'computer_3_office_desktop',
+        'computer_2_chromebook',
+        'computer_1_old_potato',
+        'clothing_8_diamond_robe_and_crown',
+        'clothing_7_personal_tailor_collection',
+        'clothing_6_custom_fit_w_chains',
+        'clothing_5_full_hypebeast_fit',
+        'clothing_4_designer_streetwear',
+        'clothing_3_branded_tee',
+        'clothing_2_thrifted_hoodie',
+        'clothing_1_torn_tee_cargo_shorts',
+        'camera_5_cinematic_film_gear',
+        'camera_4_dslr_mic_ringlight',
+        'camera_3_basic_dslr',
+        'camera_2_phone_on_tripod',
+        'camera_1_cheap_webcam'
+    ];
 
+    imageNames.forEach((asset) => {
+        this.load.image(asset, `assets/${asset}.png`);
+    });
     // // Add error handling for image loading
     // this.load.on("filecomplete", (key, type, data) => {
     //   console.log(`Loaded: ${key}`);
@@ -95,24 +137,47 @@ function create() {
 }
 
 function render() {
-    renderUpgrades.call(this);
+    renderSingleImage.call(this);
+    renderImageGrid.call(this);
     renderUI.call(this);
 }
-function renderUpgrades() {
-    //OBJECTS
-    const tileSize = 16;
-    for (let x = 25; x < 50; x++) {
-        for (let y = 0; y < 32; y++) {
-            this.add.image(x * tileSize, y * tileSize, 'roomfloor');
+
+function renderSingleImage() {
+    // Render a single image in the second column
+    const singleImageX = 600; // Adjust X position for the second column
+    const singleImageY = 200; // Y position for the single image
+
+    const desiredWidth = 300; // Desired width
+    const desiredHeight = 300; // Desired height
+
+    this.add
+        .image(singleImageX, singleImageY, 'house_1_cardboard_box')
+        .setDisplaySize(desiredWidth, desiredHeight) // Set the display size to 300x300
+        .setOrigin(0.5, 0.5); // Center the image
+}
+
+function renderImageGrid() {
+    // Render a 2x2 grid of images in the third column
+    const gridX = 800; // Adjust X position for the third column
+    const gridY = 75; // Y position for the grid
+    const tileSize = 200; // Size of each tile in the grid
+
+    const imageKey = 'phone_5_iphone_modern'; // Key for the image to be used
+    const image = this.add.image(0, 0, imageKey); // Create a temporary image to get its dimensions
+    const imageWidth = image.width; // Get the width of the image
+    const imageHeight = image.height; // Get the height of the image
+    image.destroy(); // Destroy the temporary image
+
+    const scaleX = (tileSize / imageWidth) * 0.75; // Calculate scale factor for width
+    const scaleY = (tileSize / imageHeight) * 0.75; // Calculate scale factor for height
+    const scale = Math.min(scaleX, scaleY); // Use the smaller scale to maintain aspect ratio
+
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 2; j++) {
+            const xPos = gridX + j * tileSize + (tileSize - imageWidth * scale) / 2; // Center the image horizontally
+            const yPos = gridY + i * tileSize + (tileSize - imageHeight * scale) / 2; // Center the image vertically
+            this.add.image(xPos, yPos, imageKey).setScale(scale).setOrigin(0.5, 0.5); // Center the image
         }
-    }
-
-    for (var ownedUpgrade of playerOwnedUpgrades) {
-        var upgrade = availableUpgrades.find((x) => x.id == ownedUpgrade);
-        console.log('upgrade:');
-        console.log(upgrade);
-
-        this.add.image(upgrade.tilePosition.x * tileSize, upgrade.tilePosition.y * tileSize, upgrade.id).setScale(2);
     }
 }
 
