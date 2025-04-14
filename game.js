@@ -24,9 +24,9 @@ const availableUpgrades = [
         id: 'green_screen',
         name: 'Green Screen',
         farmSpeedIncrease: 2,
-        cost: 200,
+        cost: 1,
         tileSlot: 'room1',
-        tilePosition: { x: 5, y: 5 }
+        tilePosition: { x: 15, y: 15 }
     },
     {
         id: 'computer_potato',
@@ -52,6 +52,7 @@ function preload() {
     this.load.image('roomfloor', 'assets/roomfloor.png');
     this.load.image('guy', 'assets/tile_0455.png');
     this.load.image('computer_potato', 'assets/computer.png');
+    this.load.image('green_screen', 'assets/greenscreen.png');
     this.load.image('car', 'assets/car.png');
     this.load.image('upgradeBtn', 'assets/tile_0480.png'); // placeholder for now
 
@@ -109,17 +110,19 @@ function renderUpgrades() {
 
 function renderUI() {
     // UI
-    totalPointsText = this.add.text(20, 20, '$CLOUT 0', {
-        fontFamily: 'monospace',
-        fontSize: '20px',
-        color: '#00ff00'
-    });
-
-    farmSpeedText = this.add.text(20, 50, 'Farming Speed: ' + farmSpeed, {
-        fontFamily: 'monospace',
+    let uiTextStyle = {
         fontSize: '16px',
-        color: '#00ff00'
-    });
+        color: '#00ff00',
+        fontFamily: 'monospace',
+        stroke: '#000000',
+        strokeThickness: 4
+    };
+
+    walletText = this.add.text(20, 0, `Wallet: ${walletAddress}`, uiTextStyle);
+
+    totalPointsText = this.add.text(20, 20, '$CLOUT 0', uiTextStyle);
+
+    farmSpeedText = this.add.text(20, 50, 'Farming Speed: ' + farmSpeed, uiTextStyle);
 
     // Shop Button
     const shopButton = this.add
@@ -161,13 +164,7 @@ function renderUI() {
 
         // Display available upgrades and allow purchasing
         availableUpgrades.forEach((upgrade, index) => {
-            const upgradeText = this.add
-                .text(20, 80 + index * 30, `${upgrade.name} - Cost: ${upgrade.cost}`, {
-                    fontFamily: 'monospace',
-                    fontSize: '16px',
-                    color: '#00ff00'
-                })
-                .setName('shopItem');
+            const upgradeText = this.add.text(20, 80 + index * 30, `${upgrade.name} - Cost: ${upgrade.cost}`, uiTextStyle).setName('shopItem');
 
             upgradeText
                 .setInteractive()
@@ -204,7 +201,9 @@ function renderUI() {
 function update(time, delta) {
     if (time - lastTick > 1000) {
         totalPoints += farmSpeed;
-        totalPointsText.setText(`Wallet: ${walletAddress.toString().slice(0, 6)}... $CLOUT  + ${totalPoints}`);
+
+        walletText.setText(`Wallet: ${walletAddress.toString().slice(0, 6)}...`);
+        totalPointsText.setText(`$CLOUT ${totalPoints}`);
         farmSpeedText.setText(farmSpeed + '/s');
         lastTick = time;
     }
