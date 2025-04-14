@@ -151,7 +151,7 @@ function renderSingleImage() {
     const desiredHeight = 300; // Desired height
 
     this.add
-        .image(singleImageX, singleImageY, 'house_1_cardboard_box')
+        .image(singleImageX, singleImageY, 'house_10_crypto_mansion')
         .setDisplaySize(desiredWidth, desiredHeight) // Set the display size to 300x300
         .setOrigin(0.5, 0.5); // Center the image
 }
@@ -162,21 +162,31 @@ function renderImageGrid() {
     const gridY = 75; // Y position for the grid
     const tileSize = 200; // Size of each tile in the grid
 
-    const imageKey = 'phone_5_iphone_modern'; // Key for the image to be used
-    const image = this.add.image(0, 0, imageKey); // Create a temporary image to get its dimensions
-    const imageWidth = image.width; // Get the width of the image
-    const imageHeight = image.height; // Get the height of the image
-    image.destroy(); // Destroy the temporary image
-
-    const scaleX = (tileSize / imageWidth) * 0.75; // Calculate scale factor for width
-    const scaleY = (tileSize / imageHeight) * 0.75; // Calculate scale factor for height
-    const scale = Math.min(scaleX, scaleY); // Use the smaller scale to maintain aspect ratio
-
     for (let i = 0; i < 2; i++) {
         for (let j = 0; j < 2; j++) {
+            const phoneImages = ['phone_6_iphone_diamond', 'phone_5_iphone_modern', 'computer_2_chromebook', 'clothing_6_custom_fit_w_chains', 'vehicle_1_skateboard', 'vehicle_7_lamborghini']; // Key for the image to be used
+            const imageKey = phoneImages[Math.floor(Math.random() * phoneImages.length)]; // Pick a random phone image
+            const image = this.add.image(0, 0, imageKey); // Create a temporary image to get its dimensions
+            const imageWidth = image.width; // Get the width of the image
+            const imageHeight = image.height; // Get the height of the image
+            image.destroy(); // Destroy the temporary image
+
+            const scaleX = (tileSize / imageWidth) * 0.55; // Calculate scale factor for width
+            const scaleY = (tileSize / imageHeight) * 0.55; // Calculate scale factor for height
+            const scale = Math.min(scaleX, scaleY); // Use the smaller scale to maintain aspect ratio
+
             const xPos = gridX + j * tileSize + (tileSize - imageWidth * scale) / 2; // Center the image horizontally
             const yPos = gridY + i * tileSize + (tileSize - imageHeight * scale) / 2; // Center the image vertically
-            this.add.image(xPos, yPos, imageKey).setScale(scale).setOrigin(0.5, 0.5); // Center the image
+            this.add
+                .image(xPos, yPos, imageKey)
+                .setDisplaySize(imageWidth * scale, imageHeight * scale) // Set the display size while maintaining aspect ratio
+                // Set the display size to 300x300
+                .setOrigin(0.5, 0.5); // Center the image
+
+            const titleText = 'title'.replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase()); // Format title from image key
+            this.add.text(xPos, yPos - (imageHeight * scale) / 2 - 10, titleText, { fontSize: '14px', color: '#ffffff', fontFamily: 'monospace' }).setOrigin(0.5, 1); // Add title text
+
+            this.add.text(xPos, yPos + (imageHeight * scale) / 2 + 10, '$clout/s', { fontSize: '14px', color: '#ffffff', fontFamily: 'monospace' }).setOrigin(0.5, 0); // Add title text below
         }
     }
 }
