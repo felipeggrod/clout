@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Idle Bitcoin Farm</title>
+        <style>
+            html,
+            body {
+                margin: 0;
+                height: 100%; /* Ensure body takes full height */
+                display: flex; /* Use flexbox to center the canvas */
+                justify-content: center; /* Center horizontally */
+                align-items: top; /* Center vertically */
+                background: #000; /* Background color */
+            }
+            canvas {
+                display: block; /* Ensure canvas is a block element */
+                width: 1200px; /* Set to match game width */
+                height: 400px; /* Set to match game height */
+            }
+        </style>
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
+        <script src="game.js"></script>
+        <script src="https://unpkg.com/@solana/wallet-adapter-base"></script>
+        <script src="https://unpkg.com/@solana/wallet-adapter-phantom"></script>
+    </body>
+</html>

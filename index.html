@@ -1,29 +1,62 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
-        <title>Idle Bitcoin Farm</title>
-        <style>
-            html,
-            body {
-                margin: 0;
-                height: 100%; /* Ensure body takes full height */
-                display: flex; /* Use flexbox to center the canvas */
-                justify-content: center; /* Center horizontally */
-                align-items: top; /* Center vertically */
-                background: #000; /* Background color */
-            }
-            canvas {
-                display: block; /* Ensure canvas is a block element */
-                width: 1200px; /* Set to match game width */
-                height: 400px; /* Set to match game height */
-            }
-        </style>
+        <!-- zimjs.com - JavaScript Canvas Framework -->
+        <script type="module">
+            import zim from 'https://zimjs.org/cdn/017/zim_game';
+
+            // See Docs under Frame for FIT, FILL, FULL, and TAG
+            new Frame(FIT, 1024, 768, light, dark, ready);
+            function ready() {
+                // given F (Frame), S (Stage), W (width), H (height)
+                // put code here
+
+                // Load images
+                const backgroundImage = new Image();
+                const spriteImage = new Image();
+
+                backgroundImage.src = 'bg1.png'; // Updated path
+                spriteImage.src = 'sprite.png'; // Updated path
+
+                // Wait for images to load
+                Promise.all([
+                    new Promise((resolve) => {
+                        backgroundImage.onload = resolve;
+                    }),
+                    new Promise((resolve) => {
+                        spriteImage.onload = resolve;
+                    })
+                ])
+                    .then(() => {
+                        // Create the isometric board
+                        const board = new Board().center();
+                        const boardSize = 8;
+
+                        // Set the background image
+                        const background = new Bitmap(backgroundImage).center();
+                        board.addChild(background); // Add background to the board first
+
+                        // Create and place sprites on the board
+                        for (let i = 0; i < boardSize; i++) {
+                            // Adjust the loop for the number of slots
+                            for (let j = 0; j < boardSize; j++) {
+                                const sprite = new Bitmap(spriteImage).center(); // Center the sprite first
+
+                                const spriteSize = 66;
+                                const positionOffset = spriteSize * boardSize;
+                                sprite.scaleX = spriteSize / spriteImage.width; // Scale the sprite width
+                                sprite.scaleY = spriteSize / spriteImage.height; // Scale the sprite height
+                                sprite.x = (i - j) * (spriteSize / 2) + positionOffset; // Adjust x position for isometric layout
+                                sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 2.5; // Adjust y position for isometric layout
+                            }
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error loading images:', error);
+                    });
+            } // end ready
+        </script>
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
     </head>
-    <body>
-        <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
-        <script src="game.js"></script>
-        <script src="https://unpkg.com/@solana/wallet-adapter-base"></script>
-        <script src="https://unpkg.com/@solana/wallet-adapter-phantom"></script>
-    </body>
+    <body></body>
 </html>
