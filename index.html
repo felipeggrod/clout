@@ -33,26 +33,65 @@
                         S.addChild(background); // Add background to the board first
 
                         // Create the isometric board
-                        const board = new Board().center();
-                        board.alpha = 0.5;
-                        S.addChild(board);
                         const boardSize = 4;
+                        const cellSize = 100;
+
+                        const boardConfig = {
+                            cols: boardSize,
+                            rows: boardSize,
+                            colors: series(light, dark),
+                            iso: true, // Make the board isometric
+                            labels: false, // No labels
+                            arrows: false, // No arrows
+                            pieces: false, // We'll add our own pieces
+                            size: 50
+                        };
+                        const board = new Board(boardConfig).center();
+
+                        // board.alpha = 0.5;
+                        S.addChild(board);
 
                         // Create and place sprites on the board
-                        for (let i = 0; i < boardSize; i++) {
-                            // Adjust the loop for the number of slots
-                            for (let j = 0; j < boardSize; j++) {
-                                const sprite = new Bitmap(spriteImage).center(); // Center the sprite first
+                        // for (let i = 0; i < boardSize; i++) {
+                        //     // Adjust the loop for the number of slots
+                        //     for (let j = 0; j < boardSize; j++) {
+                        //         const sprite = new Bitmap(spriteImage).center(); // Center the sprite first
 
-                                const spriteSize = 120;
-                                const positionOffset = spriteSize * boardSize;
-                                sprite.scaleX = spriteSize / spriteImage.width; // Scale the sprite width
-                                sprite.scaleY = spriteSize / spriteImage.height; // Scale the sprite height
-                                sprite.x = (i - j) * (spriteSize / 2) + positionOffset / 2; // Adjust x position for isometric layout
-                                sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 10; // Adjust y position for isometric layout
+                        //         // const spriteSize = 120;
+                        //         // const positionOffset = spriteSize * boardSize;
+                        //         // sprite.scaleX = spriteSize / spriteImage.width; // Scale the sprite width
+                        //         // sprite.scaleY = spriteSize / spriteImage.height; // Scale the sprite height
+                        //         // sprite.x = (i - j) * (spriteSize / 2) + positionOffset / 2; // Adjust x position for isometric layout
+                        //         // sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 10; // Adjust y position for isometric layout
+
+                        //         // Add the sprite to the board at the specified position
+                        //         board.add(sprite, i, j);
+                        //     }
+                        // }
+
+                        for (let i = 0; i < boardSize; i++) {
+                            for (let j = 0; j < boardSize; j++) {
+                                // Create a container for the sprite
+                                const container = new Container();
+
+                                // Create the sprite
+                                const sprite = new Bitmap(spriteImage);
+
+                                // Calculate scale to fit the sprite within the cell
+                                // Using 80% of cell size to leave some padding
+                                const scaleFactor = (cellSize * 0.8) / Math.max(spriteImage.width, spriteImage.height);
+
+                                // Apply scaling and center the sprite within the container
+                                sprite.sca(scaleFactor);
+                                sprite.center(container);
+
+                                // Add the container as a piece to the board
+                                // The board.add method properly handles isometric positioning
+                                board.add(container, j, i);
                             }
                         }
                     })
+
                     .catch((error) => {
                         console.error('Error loading images:', error);
                     });
