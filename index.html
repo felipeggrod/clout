@@ -28,13 +28,15 @@
                     })
                 ])
                     .then(() => {
-                        // Create the isometric board
-                        const board = new Board().center();
-                        const boardSize = 8;
-
                         // Set the background image
                         const background = new Bitmap(backgroundImage).center();
-                        board.addChild(background); // Add background to the board first
+                        S.addChild(background); // Add background to the board first
+
+                        // Create the isometric board
+                        const board = new Board().center();
+                        board.alpha = 0.5;
+                        S.addChild(board);
+                        const boardSize = 4;
 
                         // Create and place sprites on the board
                         for (let i = 0; i < boardSize; i++) {
@@ -42,12 +44,12 @@
                             for (let j = 0; j < boardSize; j++) {
                                 const sprite = new Bitmap(spriteImage).center(); // Center the sprite first
 
-                                const spriteSize = 66;
+                                const spriteSize = 120;
                                 const positionOffset = spriteSize * boardSize;
                                 sprite.scaleX = spriteSize / spriteImage.width; // Scale the sprite width
                                 sprite.scaleY = spriteSize / spriteImage.height; // Scale the sprite height
-                                sprite.x = (i - j) * (spriteSize / 2) + positionOffset; // Adjust x position for isometric layout
-                                sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 2.5; // Adjust y position for isometric layout
+                                sprite.x = (i - j) * (spriteSize / 2) + positionOffset / 2; // Adjust x position for isometric layout
+                                sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 10; // Adjust y position for isometric layout
                             }
                         }
                     })
