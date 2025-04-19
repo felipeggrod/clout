@@ -21,10 +21,16 @@ fitting place/background sprites
             import zim from 'https://zimjs.org/cdn/017/zim_game';
             import met from 'https://zimjs.org/cdn/017/zim';
 
+            let slotUpgrades = ['toaster', 'raspberry_pi_miner', 'asic_miner', 'toaster', 'toaster', 'toaster'];
+
             // See Docs under Frame for FIT, FILL, FULL, and TAG
             const feame = new Frame(FIT, 1000, 1000, light, dark, ready);
+
+            export function Render(minerIdList) {
+                slotUpgrades = minerIdList;
+                ready();
+            }
             function ready() {
-                let slotUpgrades = ['toaster', 'toaster', 'toaster', 'toaster', 'toaster', 'toaster'];
                 // given F (Frame), S (Stage), W (width), H (height)
                 // put code here
 
@@ -144,6 +150,9 @@ fitting place/background sprites
                             console.log('Event object:', event); // Log the entire event object for debugging
                             console.log(`Cell clicked: Row ${event.target.boardRow}, Column ${event.target.boardCol}`); // Log the cell position
                             // console.log(`Cell clicked: Row ${event.tileRow}, Column ${event.tileCol}`); // Log the cell position
+
+                            slotUpgrades.pop();
+                            Render(slotUpgrades);
                         });
                     })
 
