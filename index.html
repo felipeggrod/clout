@@ -14,6 +14,8 @@ fitting place/background sprites
 
 <!DOCTYPE html>
 <html>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <!-- Added Tailwind CSS -->
     <script src="https://zimjs.org/cdn/gifler.js"></script>
     <head>
         <!-- zimjs.com - JavaScript Canvas Framework -->
@@ -24,7 +26,10 @@ fitting place/background sprites
             let slotUpgrades = ['toaster', 'raspberry_pi_miner', 'asic_miner', 'toaster', 'toaster', 'toaster'];
 
             // See Docs under Frame for FIT, FILL, FULL, and TAG
-            const feame = new Frame(FIT, 1000, 1000, light, dark, ready);
+            // const feame = new Frame(FIT, 1000, 1000, light, dark, ready);
+            const zimDiv = document.getElementById('zim');
+            const frame = new Frame('zim', zimDiv.offsetWidth, zimDiv.offsetHeight, light, dark, ready);
+            // const frame = new Frame('zim', 300, 300, light, dark, ready);
 
             export function Render(minerIdList) {
                 slotUpgrades = minerIdList;
@@ -163,5 +168,7 @@ fitting place/background sprites
         </script>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
     </head>
-    <body></body>
+    <body>
+        <div id="zim" style="width: 300px; height: 200px"></div>
+    </body>
 </html>
