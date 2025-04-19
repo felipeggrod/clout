@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
+    <script src="https://zimjs.org/cdn/gifler.js"></script>
     <head>
         <!-- zimjs.com - JavaScript Canvas Framework -->
         <script type="module">
             import zim from 'https://zimjs.org/cdn/017/zim_game';
+            import met from 'https://zimjs.org/cdn/017/zim';
 
             // See Docs under Frame for FIT, FILL, FULL, and TAG
-            const feame = new Frame(FIT, 1024, 768, light, dark, ready);
+            const feame = new Frame(FIT, 1000, 1000, light, dark, ready);
             function ready() {
+                let slotUpgrades = ['toaster', 'toaster', 'toaster', 'toaster', 'toaster', 'toaster'];
                 // given F (Frame), S (Stage), W (width), H (height)
                 // put code here
 
@@ -15,8 +18,14 @@
                 const backgroundImage = new Image();
                 const spriteImage = new Image();
 
+                const toaster = new GIF('toaster.gif');
+                // .centerReg()
+                // .wiggle('x', stageW / 2, 0, 100, 1, 5)
+                // .wiggle('y', stageH / 2, 0, 100, 1, 5)
+                // .wiggle('rotation', 0, 5, 15, 3, 5);
+
                 backgroundImage.src = 'bg1.png'; // Updated path
-                spriteImage.src = 'toaster.gif'; // Updated path
+                spriteImage.src = 'sprite.png'; // Updated path
 
                 // Wait for images to load
                 Promise.all([
@@ -75,17 +84,24 @@
                         //     }
                         // }
 
+                        let slot = 0;
                         for (let i = 0; i < boardSize; i++) {
                             for (let j = 0; j < boardSize; j++) {
                                 // Create a container for the sprite
                                 const container = new Container();
 
                                 // Create the sprite
-                                const sprite = new Bitmap(spriteImage);
+                                // const sprite = new Bitmap(spriteImage);
+                                if (!slotUpgrades[slot]) continue;
+                                const sprite = new GIF(`${slotUpgrades[slot]}.gif`);
+
+                                timeout(Math.random() * 1, () => {
+                                    sprite.reset(); // goes back to start and would play from start
+                                });
 
                                 // Calculate scale to fit the sprite within the cell
                                 // Using 80% of cell size to leave some padding
-                                const scaleFactor = (cellSize * 1) / Math.max(spriteImage.width, spriteImage.height);
+                                const scaleFactor = (cellSize * 2) / Math.max(spriteImage.width, spriteImage.height);
 
                                 // Apply scaling and center the sprite within the container
                                 sprite.sca(scaleFactor * (1 + -0.03 * (i + j))); //Stop perspective foreshortening BULLSHIT
@@ -105,6 +121,8 @@
                                     ease: 'linear',
                                     wait: Math.random() * 0.3
                                 });
+
+                                slot++; //update slot
                             }
                         }
 
