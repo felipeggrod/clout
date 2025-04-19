@@ -16,7 +16,7 @@
                 const spriteImage = new Image();
 
                 backgroundImage.src = 'bg1.png'; // Updated path
-                spriteImage.src = 'sprite.png'; // Updated path
+                spriteImage.src = 'toaster.gif'; // Updated path
 
                 // Wait for images to load
                 Promise.all([
@@ -96,6 +96,15 @@
                                 // Add the container as a piece to the board
                                 // The board.add method properly handles isometric positioning
                                 board.add(container, j, i);
+
+                                sprite.animate({
+                                    props: { scaleX: sprite.scaleX * 1.02 },
+                                    time: 0.099, // 0.5 seconds in one direction
+                                    loop: true,
+                                    rewind: true, // This creates a ping-pong effect
+                                    ease: 'linear',
+                                    wait: Math.random() * 0.3
+                                });
                             }
                         }
 
