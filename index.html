@@ -6,7 +6,7 @@
             import zim from 'https://zimjs.org/cdn/017/zim_game';
 
             // See Docs under Frame for FIT, FILL, FULL, and TAG
-            new Frame(FIT, 1024, 768, light, dark, ready);
+            const feame = new Frame(FIT, 1024, 768, light, dark, ready);
             function ready() {
                 // given F (Frame), S (Stage), W (width), H (height)
                 // put code here
@@ -39,14 +39,19 @@
                         const boardConfig = {
                             cols: boardSize,
                             rows: boardSize,
-                            colors: series(light, dark),
-                            iso: true, // Make the board isometric
-                            labels: false, // No labels
-                            arrows: false, // No arrows
-                            pieces: false, // We'll add our own pieces
-                            size: 50
+                            fill: false, // Disable fill completely
+                            backgroundColor: 'rgba(0, 0, 255, 0.01)',
+                            borderColor: 'white', // White borders
+                            borderWidth: 3, // Thicker borders
+                            isometric: true, // Make the board isometric
+                            // labels: false, // No labels
+                            // arrows: false, // No arrows
+                            // pieces: false, // We'll add our own pieces
+
+                            size: 80
                         };
                         const board = new Board(boardConfig).center();
+                        board.y += board.getBounds().height * 0.3; // Move board down by 30%
 
                         // board.alpha = 0.5;
                         S.addChild(board);
@@ -57,15 +62,16 @@
                         //     for (let j = 0; j < boardSize; j++) {
                         //         const sprite = new Bitmap(spriteImage).center(); // Center the sprite first
 
-                        //         // const spriteSize = 120;
-                        //         // const positionOffset = spriteSize * boardSize;
-                        //         // sprite.scaleX = spriteSize / spriteImage.width; // Scale the sprite width
-                        //         // sprite.scaleY = spriteSize / spriteImage.height; // Scale the sprite height
-                        //         // sprite.x = (i - j) * (spriteSize / 2) + positionOffset / 2; // Adjust x position for isometric layout
-                        //         // sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 10; // Adjust y position for isometric layout
+                        //         const spriteSize = 180;
+                        //         const padding = 0.7;
+                        //         const positionOffset = spriteSize * boardSize;
+                        //         sprite.scaleX = (padding * spriteSize) / spriteImage.width; // Scale the sprite width
+                        //         sprite.scaleY = (padding * spriteSize) / spriteImage.height; // Scale the sprite height
+                        //         sprite.x = (i - j) * (spriteSize / 2) + positionOffset / 2; // Adjust x position for isometric layout
+                        //         sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 2; // Adjust y position for isometric layout
 
                         //         // Add the sprite to the board at the specified position
-                        //         board.add(sprite, i, j);
+                        //         // board.add(sprite, i, j);
                         //     }
                         // }
 
@@ -79,10 +85,12 @@
 
                                 // Calculate scale to fit the sprite within the cell
                                 // Using 80% of cell size to leave some padding
-                                const scaleFactor = (cellSize * 0.8) / Math.max(spriteImage.width, spriteImage.height);
+                                const scaleFactor = (cellSize * 1) / Math.max(spriteImage.width, spriteImage.height);
 
                                 // Apply scaling and center the sprite within the container
-                                sprite.sca(scaleFactor);
+                                sprite.sca(scaleFactor * (1 + -0.03 * (i + j))); //Stop perspective foreshortening BULLSHIT
+                                // sprite.x = 30;
+                                // sprite.y = 30;
                                 sprite.center(container);
 
                                 // Add the container as a piece to the board
@@ -90,6 +98,12 @@
                                 board.add(container, j, i);
                             }
                         }
+
+                        board.on('click', (event) => {
+                            console.log('Event object:', event); // Log the entire event object for debugging
+                            console.log(`Cell clicked: Row ${event.target.boardRow}, Column ${event.target.boardCol}`); // Log the cell position
+                            // console.log(`Cell clicked: Row ${event.tileRow}, Column ${event.tileCol}`); // Log the cell position
+                        });
                     })
 
                     .catch((error) => {
