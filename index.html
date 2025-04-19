@@ -28,7 +28,14 @@ fitting place/background sprites
             // See Docs under Frame for FIT, FILL, FULL, and TAG
             // const feame = new Frame(FIT, 1000, 1000, light, dark, ready);
             const zimDiv = document.getElementById('zim');
-            const frame = new Frame('zim', zimDiv.offsetWidth, zimDiv.offsetHeight, light, dark, ready);
+            const frame = new Frame({
+                scaling: 'zim', // Use FIT to scale the content to fit in the div
+                width: 1000, // Your design width
+                height: 1000, // Your design height
+                ready: ready // Ready function
+            });
+
+            // const frame = new Frame('zim', zimDiv.offsetWidth, zimDiv.offsetHeight, light, dark, ready);
             // const frame = new Frame('zim', 300, 300, light, dark, ready);
 
             export function Render(minerIdList) {
@@ -159,6 +166,12 @@ fitting place/background sprites
                             slotUpgrades.pop();
                             Render(slotUpgrades);
                         });
+
+                        const canvas = document.getElementById('zimCanvas');
+                        canvas.style.width = `${zimDiv.offsetWidth}px`;
+                        canvas.style.height = `${zimDiv.offsetHeight}px`;
+                        canvas.width = zimDiv.offsetWidth; // Set the canvas width
+                        canvas.height = zimDiv.offsetHeight; // Set the canvas height
                     })
 
                     .catch((error) => {
@@ -169,6 +182,6 @@ fitting place/background sprites
         <meta name="viewport" content="width=device-width, user-scalable=no" />
     </head>
     <body>
-        <div id="zim" style="width: 300px; height: 200px"></div>
+        <div id="zim" style="width: 300px; height: 300px"></div>
     </body>
 </html>
