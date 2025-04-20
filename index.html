@@ -24,15 +24,17 @@ fitting place/background sprites
     </script>
     <body>
         <div class="grid grid-cols-3 gap-4">
-            <div class="col-span-1">Column 1</div>
+            <div class="col-span-1">
+                Column 1
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.push('toaster'); Render(toasterArray)">Add Toaster</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.push('raspberry_pi_miner'); Render(toasterArray)">Add Raspberry</button>
+                <button class="bg-red-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.pop(); Render(toasterArray)">Remove Miner</button>
+            </div>
+
             <div class="col-span-1">
                 <div id="zim" style="width: 100%; height: 100%; aspect-ratio: 1"></div>
             </div>
             <div class="col-span-1">Column 2</div>
         </div>
-
-        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.push('toaster'); Render(toasterArray)">Add Toaster</button>
-        <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.push('raspberry_pi_miner'); Render(toasterArray)">Add Raspberry</button>
-        <button class="bg-red-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.pop(); Render(toasterArray)">Remove Miner</button>
     </body>
 </html>

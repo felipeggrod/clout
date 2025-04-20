@@ -1,7 +1,7 @@
 import zim from 'https://zimjs.org/cdn/017/zim_game';
 import met from 'https://zimjs.org/cdn/017/zim';
 
-let slotUpgrades = ['toaster', 'miner_1', 'miner_2', 'miner_3', 'miner_4', 'miner_5', 'miner_6', 'miner_7', 'miner_8']; //, 'asic_minerrack', 'raspberry_pi_miner', 'asic_miner', 'toaster', 'toaster', 'toaster'];
+var slotUpgrades = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
 
 const zimDiv = document.getElementById('zim');
 const frame = new Frame({
@@ -23,18 +23,13 @@ function ready() {
     // given F (Frame), S (Stage), W (width), H (height)
 
     const backgroundImage = new Image();
-    const spriteImage = new Image();
 
     backgroundImage.src = 'bg1.png'; // Updated path
-    spriteImage.src = 'sprite.png'; // Updated path
 
     // Wait for images to load
     Promise.all([
         new Promise((resolve) => {
             backgroundImage.onload = resolve;
-        }),
-        new Promise((resolve) => {
-            spriteImage.onload = resolve;
         })
     ])
         .then(() => {
@@ -80,19 +75,19 @@ function ready() {
                         const sprite = new Bitmap(img);
 
                         // Calculate scale to fit the sprite within the cell
-                        var scaleFactor = (cellSize * 2) / Math.max(spriteImage.width, spriteImage.height);
+                        var scaleFactor = (cellSize * 2) / Math.max(img.width, img.height);
                         scaleFactor *= 0.4; // img from gif factor
 
                         var spriteScale = 1;
-                        if (img.src.includes('miner_1')) spriteScale = 0.8;
-                        if (img.src.includes('miner_2')) spriteScale = 1.1;
-                        if (img.src.includes('miner_3')) spriteScale = 1.1;
-                        if (img.src.includes('miner_4')) spriteScale = 1.2;
-                        if (img.src.includes('miner_5')) spriteScale = 1.4;
-                        if (img.src.includes('miner_6')) spriteScale = 1;
-                        if (img.src.includes('miner_7')) spriteScale = 1.6;
-                        if (img.src.includes('miner_8')) spriteScale = 1.6;
-                        if (img.src.includes('miner_9')) spriteScale = 1.6;
+                        if (img.src.includes('toaster')) spriteScale = 0.8;
+                        if (img.src.includes('raspberry_pi')) spriteScale = 1.1;
+                        if (img.src.includes('notebook')) spriteScale = 1.1;
+                        if (img.src.includes('gamer_rig')) spriteScale = 1.2;
+                        if (img.src.includes('gpu_rack')) spriteScale = 1.4;
+                        if (img.src.includes('asic_solo')) spriteScale = 0.9;
+                        if (img.src.includes('asic_rack')) spriteScale = 1.6;
+                        if (img.src.includes('hydro_farm')) spriteScale = 1.6;
+                        if (img.src.includes('quantum')) spriteScale = 1.4;
 
                         scaleFactor *= spriteScale;
 
@@ -100,15 +95,15 @@ function ready() {
                         sprite.sca(scaleFactor * (1 + -0.03 * (i + j))); // Stop perspective foreshortening
                         sprite.center(container);
 
-                        if (img.src.includes('miner_1')) sprite.y *= 1.3;
-                        if (img.src.includes('miner_2')) sprite.y *= 1.3;
-                        if (img.src.includes('miner_3')) sprite.y *= 1.5;
-                        if (img.src.includes('miner_4')) sprite.y *= 1.5;
-                        if (img.src.includes('miner_5')) sprite.y *= 1.5;
-                        if (img.src.includes('miner_6')) sprite.y *= 1.5;
-                        if (img.src.includes('miner_7')) sprite.y *= 1.5;
-                        if (img.src.includes('miner_8')) sprite.y *= 1.5;
-                        if (img.src.includes('miner_9')) sprite.y *= 1.5;
+                        if (img.src.includes('toaster_miner')) sprite.y *= 1.3;
+                        if (img.src.includes('pi_miner_one')) sprite.y *= 1.3;
+                        if (img.src.includes('notebook')) sprite.y *= 1.5;
+                        if (img.src.includes('gamer_rig')) sprite.y *= 1.5;
+                        if (img.src.includes('gpu_rack')) sprite.y *= 1.5;
+                        if (img.src.includes('asic_solo')) sprite.y *= 1.4; // Ensure asic solo is included
+                        if (img.src.includes('asic_rack')) sprite.y *= 1.5;
+                        if (img.src.includes('hydro_farm')) sprite.y *= 1.5;
+                        if (img.src.includes('quantum')) sprite.y *= 1.5;
 
                         // Add the container as a piece to the board
                         board.add(container, j, i);
