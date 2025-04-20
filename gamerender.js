@@ -2,6 +2,8 @@ import zim from 'https://zimjs.org/cdn/017/zim_game';
 import met from 'https://zimjs.org/cdn/017/zim';
 
 var slotUpgrades = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+var backgroundImages = ['bg1.png', 'bg2.png', 'bg3.png'];
+var background = 'bg2';
 
 const zimDiv = document.getElementById('zim');
 const frame = new Frame({
@@ -11,20 +13,20 @@ const frame = new Frame({
     ready: ready // Ready function
 });
 
-export function Render(minerIdList) {
+export function Render(minerIdList, backgroundId) {
     slotUpgrades = minerIdList;
+    background = backgroundId;
     ready();
 }
-window.Render = function (minerIdList) {
-    Render(minerIdList);
+window.Render = function (minerIdList, backgroundId) {
+    Render(minerIdList, backgroundId);
 };
 
 function ready() {
     // given F (Frame), S (Stage), W (width), H (height)
 
     const backgroundImage = new Image();
-
-    backgroundImage.src = 'bg1.png'; // Updated path
+    backgroundImage.src = background + '.png';
 
     // Wait for images to load
     Promise.all([
