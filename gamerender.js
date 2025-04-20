@@ -3,8 +3,6 @@ import met from 'https://zimjs.org/cdn/017/zim';
 
 let slotUpgrades = ['toaster', 'raspberry_pi_miner', 'asic_miner', 'toaster', 'toaster', 'toaster'];
 
-// See Docs under Frame for FIT, FILL, FULL, and TAG
-// const feame = new Frame(FIT, 1000, 1000, light, dark, ready);
 const zimDiv = document.getElementById('zim');
 const frame = new Frame({
     scaling: 'zim', // Use FIT to scale the content to fit in the div
@@ -13,26 +11,17 @@ const frame = new Frame({
     ready: ready // Ready function
 });
 
-// const frame = new Frame('zim', zimDiv.offsetWidth, zimDiv.offsetHeight, light, dark, ready);
-// const frame = new Frame('zim', 300, 300, light, dark, ready);
-
 export function Render(minerIdList) {
     slotUpgrades = minerIdList;
     ready();
 }
 function ready() {
     // given F (Frame), S (Stage), W (width), H (height)
-    // put code here
 
-    // Load images
     const backgroundImage = new Image();
     const spriteImage = new Image();
 
     const toaster = new GIF('toaster.gif');
-    // .centerReg()
-    // .wiggle('x', stageW / 2, 0, 100, 1, 5)
-    // .wiggle('y', stageH / 2, 0, 100, 1, 5)
-    // .wiggle('rotation', 0, 5, 15, 3, 5);
 
     backgroundImage.src = 'bg1.png'; // Updated path
     spriteImage.src = 'sprite.png'; // Updated path
@@ -63,9 +52,6 @@ function ready() {
                 borderColor: 'rgba(255, 255, 255, 0.5)', // White borders
                 borderWidth: 3, // Thicker borders
                 isometric: true, // Make the board isometric
-                // labels: false, // No labels
-                // arrows: false, // No arrows
-                // pieces: false, // We'll add our own pieces
 
                 size: 80
             };
@@ -74,25 +60,6 @@ function ready() {
 
             // board.alpha = 0.5;
             S.addChild(board);
-
-            // Create and place sprites on the board
-            // for (let i = 0; i < boardSize; i++) {
-            //     // Adjust the loop for the number of slots
-            //     for (let j = 0; j < boardSize; j++) {
-            //         const sprite = new Bitmap(spriteImage).center(); // Center the sprite first
-
-            //         const spriteSize = 180;
-            //         const padding = 0.7;
-            //         const positionOffset = spriteSize * boardSize;
-            //         sprite.scaleX = (padding * spriteSize) / spriteImage.width; // Scale the sprite width
-            //         sprite.scaleY = (padding * spriteSize) / spriteImage.height; // Scale the sprite height
-            //         sprite.x = (i - j) * (spriteSize / 2) + positionOffset / 2; // Adjust x position for isometric layout
-            //         sprite.y = (i + j) * (spriteSize / 4) + positionOffset / 2; // Adjust y position for isometric layout
-
-            //         // Add the sprite to the board at the specified position
-            //         // board.add(sprite, i, j);
-            //     }
-            // }
 
             let slot = 0;
             for (let i = 0; i < boardSize; i++) {
@@ -115,8 +82,6 @@ function ready() {
 
                     // Apply scaling and center the sprite within the container
                     sprite.sca(scaleFactor * (1 + -0.03 * (i + j))); //Stop perspective foreshortening BULLSHIT
-                    // sprite.x = 30;
-                    // sprite.y = 30;
                     sprite.center(container);
 
                     // Add the container as a piece to the board
@@ -139,12 +104,12 @@ function ready() {
             board.on('click', (event) => {
                 console.log('Event object:', event); // Log the entire event object for debugging
                 console.log(`Cell clicked: Row ${event.target.boardRow}, Column ${event.target.boardCol}`); // Log the cell position
-                // console.log(`Cell clicked: Row ${event.tileRow}, Column ${event.tileCol}`); // Log the cell position
 
                 slotUpgrades.pop();
                 Render(slotUpgrades);
             });
 
+            //Fit the gameview inside the html element
             const canvas = document.getElementById('zimCanvas');
             canvas.style.width = `${zimDiv.offsetWidth}px`;
             canvas.style.height = `${zimDiv.offsetHeight}px`;
