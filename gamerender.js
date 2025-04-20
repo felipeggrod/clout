@@ -1,7 +1,7 @@
 import zim from 'https://zimjs.org/cdn/017/zim_game';
 import met from 'https://zimjs.org/cdn/017/zim';
 
-let slotUpgrades = ['toaster', 'raspberry_pi_miner', 'asic_miner', 'toaster', 'toaster', 'toaster'];
+let slotUpgrades = ['toaster', 'miner_1', 'miner_2', 'miner_3', 'miner_4', 'miner_5', 'miner_6', 'miner_7', 'miner_8']; //, 'asic_minerrack', 'raspberry_pi_miner', 'asic_miner', 'toaster', 'toaster', 'toaster'];
 
 const zimDiv = document.getElementById('zim');
 const frame = new Frame({
@@ -15,13 +15,15 @@ export function Render(minerIdList) {
     slotUpgrades = minerIdList;
     ready();
 }
+window.Render = function (minerIdList) {
+    Render(minerIdList);
+};
+
 function ready() {
     // given F (Frame), S (Stage), W (width), H (height)
 
     const backgroundImage = new Image();
     const spriteImage = new Image();
-
-    const toaster = new GIF('toaster.gif');
 
     backgroundImage.src = 'bg1.png'; // Updated path
     spriteImage.src = 'sprite.png'; // Updated path
@@ -67,37 +69,68 @@ function ready() {
                     // Create a container for the sprite
                     const container = new Container();
 
-                    // Create the sprite
-                    // const sprite = new Bitmap(spriteImage);
                     if (!slotUpgrades[slot]) continue;
-                    const sprite = new GIF(`${slotUpgrades[slot]}.gif`);
 
-                    timeout(Math.random() * 1, () => {
-                        sprite.reset(); // goes back to start and would play from start
-                    });
+                    // Load the image for the current slot
+                    const img = new Image();
+                    img.src = `${slotUpgrades[slot]}.png`;
 
-                    // Calculate scale to fit the sprite within the cell
-                    // Using 80% of cell size to leave some padding
-                    const scaleFactor = (cellSize * 2) / Math.max(spriteImage.width, spriteImage.height);
+                    // Wait for the image to load
+                    img.onload = () => {
+                        const sprite = new Bitmap(img);
 
-                    // Apply scaling and center the sprite within the container
-                    sprite.sca(scaleFactor * (1 + -0.03 * (i + j))); //Stop perspective foreshortening BULLSHIT
-                    sprite.center(container);
+                        // Calculate scale to fit the sprite within the cell
+                        var scaleFactor = (cellSize * 2) / Math.max(spriteImage.width, spriteImage.height);
+                        scaleFactor *= 0.4; // img from gif factor
 
-                    // Add the container as a piece to the board
-                    // The board.add method properly handles isometric positioning
-                    board.add(container, j, i);
+                        var spriteScale = 1;
+                        if (img.src.includes('miner_1')) spriteScale = 0.8;
+                        if (img.src.includes('miner_2')) spriteScale = 1.1;
+                        if (img.src.includes('miner_3')) spriteScale = 1.1;
+                        if (img.src.includes('miner_4')) spriteScale = 1.2;
+                        if (img.src.includes('miner_5')) spriteScale = 1.4;
+                        if (img.src.includes('miner_6')) spriteScale = 1;
+                        if (img.src.includes('miner_7')) spriteScale = 1.6;
+                        if (img.src.includes('miner_8')) spriteScale = 1.6;
+                        if (img.src.includes('miner_9')) spriteScale = 1.6;
 
-                    sprite.animate({
-                        props: { scaleX: sprite.scaleX * 1.02 },
-                        time: 0.099, // 0.5 seconds in one direction
-                        loop: true,
-                        rewind: true, // This creates a ping-pong effect
-                        ease: 'linear',
-                        wait: Math.random() * 0.3
-                    });
+                        scaleFactor *= spriteScale;
 
-                    slot++; //update slot
+                        // Apply scaling and center the sprite within the container
+                        sprite.sca(scaleFactor * (1 + -0.03 * (i + j))); // Stop perspective foreshortening
+                        sprite.center(container);
+
+                        if (img.src.includes('miner_1')) sprite.y *= 1.3;
+                        if (img.src.includes('miner_2')) sprite.y *= 1.3;
+                        if (img.src.includes('miner_3')) sprite.y *= 1.5;
+                        if (img.src.includes('miner_4')) sprite.y *= 1.5;
+                        if (img.src.includes('miner_5')) sprite.y *= 1.5;
+                        if (img.src.includes('miner_6')) sprite.y *= 1.5;
+                        if (img.src.includes('miner_7')) sprite.y *= 1.5;
+                        if (img.src.includes('miner_8')) sprite.y *= 1.5;
+                        if (img.src.includes('miner_9')) sprite.y *= 1.5;
+
+                        // Add the container as a piece to the board
+                        board.add(container, j, i);
+
+                        sprite.animate({
+                            props: {
+                                scaleX: sprite.scaleX * 1.02,
+                                y: sprite.y + 1
+                            },
+                            time: 0.099, // 0.5 seconds in one direction
+                            loop: true,
+                            rewind: true, // This creates a ping-pong effect
+                            ease: 'linear',
+                            wait: Math.random() * 0.3
+                        });
+                    };
+
+                    img.onerror = () => {
+                        console.error(`Error loading image for slot: ${slotUpgrades[slot]}`);
+                    };
+
+                    slot++; // Update slot
                 }
             }
 
