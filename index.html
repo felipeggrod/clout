@@ -7,13 +7,13 @@
         <meta name="viewport" content="width=device-width, user-scalable=no" />
         <style>
             body {
-                background-color: #1a202c; /* Dark background */
+                background-color: black; /* Dark background */
                 color: white; /* White text */
             }
         </style>
     </head>
     <body>
-        <header class="bg-gray-800 p-4 flex justify-between items-center">
+        <header class="bg-blue-500 p-4 flex justify-between items-center">
             <div class="text-lg font-bold">CM</div>
             <nav>
                 <button class="px-4" onclick="showSection('play')">Play</button>
@@ -36,9 +36,11 @@
                 <button class="bg-green-500 text-white py-2 px-4 m-2 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) + 1) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">Next Facility</button>
             </div>
 
-            <div class="col-span-1">
+            <div class="col-span-1 border p-3">
                 <h2 class="text-xl">Mining Facility</h2>
-                <div id="zim" style="width: 100%; height: 100%; aspect-ratio: 1"></div>
+                <div class="border-2 border-red-500 rounded-md">
+                    <div id="zim" style="width: 100%; height: 100%; aspect-ratio: 1"></div>
+                </div>
             </div>
         </div>
 
@@ -53,9 +55,9 @@
         </div>
 
         <script>
-            let availableMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+            let availableMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum', 'quantum_cluster'];
             let availableBackgroundImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
-            let currentMiners = ['quantum_cluster', 'toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+            let currentMiners = ['quantum_cluster', 'toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum', 'quantum_cluster'];
             let currentBg = 'bg1';
 
             function showSection(section) {
