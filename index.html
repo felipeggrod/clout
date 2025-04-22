@@ -25,8 +25,17 @@ fitting place/background sprites
         let currentBg = 'bg1';
     </script>
     <body>
-        <div class="grid grid-cols-3 gap-4">
-            <div class="col-span-1 p-5">
+        <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
+            <div class="text-lg font-bold">Logo</div>
+            <nav>
+                <button class="px-4" onclick="showSection('play')">Play</button>
+                <button class="px-4" onclick="showSection('trade')">Trade</button>
+                <button class="px-4" onclick="showSection('about')">About</button>
+            </nav>
+        </header>
+
+        <div id="play" class="grid grid-cols-2 gap-4 m-5 p-5">
+            <div class="col-span-1 m-5 p-5">
                 <div class="col-span-1">
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('toaster'); Render(currentMiners, currentBg)">Add Toaster</button>
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('raspberry_pi'); Render(currentMiners, currentBg)">Add Raspberry</button>
@@ -47,10 +56,28 @@ fitting place/background sprites
                 </div>
             </div>
 
-            <div class="col-span-1">
+            <div class="col-span-1 m-5 p-5">
                 <div id="zim" style="width: 100%; height: 100%; aspect-ratio: 1"></div>
             </div>
-            <div class="col-span-1">Column 2</div>
         </div>
+
+        <div id="trade" class="hidden">
+            <h2>Trade Section</h2>
+            <p>This is where you can trade your miners.</p>
+        </div>
+
+        <div id="about" class="hidden">
+            <h2>About Section</h2>
+            <p>This section contains information about the application.</p>
+        </div>
+
+        <script>
+            function showSection(section) {
+                document.getElementById('play').classList.add('hidden');
+                document.getElementById('trade').classList.add('hidden');
+                document.getElementById('about').classList.add('hidden');
+                document.getElementById(section).classList.remove('hidden');
+            }
+        </script>
     </body>
 </html>
