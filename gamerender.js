@@ -1,7 +1,7 @@
 import zim from 'https://zimjs.org/cdn/017/zim_game';
 import met from 'https://zimjs.org/cdn/017/zim';
 
-var slotUpgrades = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+var slotUpgrades = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum', 'quantum_cluster'];
 var backgroundImages = ['bg1.png', 'bg2.png', 'bg3.png', 'bg4.png', 'bg5.png'];
 var background = 'bg1';
 var boardSize = { rows: 4, cols: 4 };
@@ -58,7 +58,7 @@ function ready() {
                 boardSize = { rows: 3, cols: 3 }; // dad's garage //max9
             }
             if (background == 'bg5') {
-                boardSize = { rows: 3, cols: 3 };
+                boardSize = { rows: 3, cols: 3 }; // high rise apartment
             }
             console.log(`Background: '${background}', GRID SIZE: ${boardSize.rows} x ${boardSize.cols}`);
 
@@ -109,7 +109,8 @@ function ready() {
                         if (img.src.includes('asic_solo')) spriteScale = 0.9;
                         if (img.src.includes('asic_rack')) spriteScale = 1.6;
                         if (img.src.includes('hydro_farm')) spriteScale = 1.6;
-                        if (img.src.includes('quantum')) spriteScale = 1.4;
+                        if (img.src.includes('quantum')) spriteScale = 1.3;
+                        if (img.src.includes('quantum_cluster')) spriteScale = 1.5; // Existing scaling for quantum
 
                         scaleFactor *= spriteScale;
 
@@ -125,7 +126,8 @@ function ready() {
                         if (img.src.includes('asic_solo')) sprite.y *= 1.4; // Ensure asic solo is included
                         if (img.src.includes('asic_rack')) sprite.y *= 1.5;
                         if (img.src.includes('hydro_farm')) sprite.y *= 1.5;
-                        if (img.src.includes('quantum')) sprite.y *= 1.5;
+                        if (img.src.includes('quantum')) sprite.y *= 1.3;
+                        if (img.src.includes('quantum_cluster')) sprite.y *= 1.1; // New scaling for quantum cluster miner
 
                         // Add the container as a piece to the board
                         console.log(`Adding ${img.src} at Row: ${i}, Column: ${j}, Current Board Size: ${boardSize.cols}x${boardSize.rows}`); // Debug log

@@ -21,7 +21,7 @@ fitting place/background sprites
     <script>
         let availableMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
         let availableBackgroundImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
-        let currentMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+        let currentMiners = ['quantum_cluster', 'toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
         let currentBg = 'bg1';
     </script>
     <body>
@@ -37,6 +37,7 @@ fitting place/background sprites
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('asic_rack'); Render(currentMiners, currentBg)">Add ASIC Rack</button>
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('hydro_farm'); Render(currentMiners, currentBg)">Add Hydro Farm</button>
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('quantum'); Render(currentMiners, currentBg)">Add Quantum</button>
+                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('quantum_cluster'); Render(currentMiners, currentBg)">Add Quantum Cluster</button>
                     <button class="bg-red-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.pop(); Render(currentMiners, currentBg)">Remove Miner</button>
                     <button class="bg-red-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="Pop(2)">Pop</button>
                     <button class="bg-green-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) - 1 + availableBackgroundImages.length) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">
