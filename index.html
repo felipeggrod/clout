@@ -1,32 +1,20 @@
-<!--
-TODO:
-onhit/onproduce white vfx, vertical tween, +$Token text
-sfx (coin sound)
-
-DONE render() callable function
-png and gifs
-
-fitting place/background sprites
-
- -->
-
 <!DOCTYPE html>
 <html>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-    <script src="https://zimjs.org/cdn/gifler.js"></script>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <script src="https://zimjs.org/cdn/gifler.js"></script>
         <script type="module" src="gamerender.js"></script>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <style>
+            body {
+                background-color: #1a202c; /* Dark background */
+                color: white; /* White text */
+            }
+        </style>
     </head>
-    <script>
-        let availableMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
-        let availableBackgroundImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
-        let currentMiners = ['quantum_cluster', 'toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
-        let currentBg = 'bg1';
-    </script>
     <body>
-        <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
-            <div class="text-lg font-bold">Logo</div>
+        <header class="bg-gray-800 p-4 flex justify-between items-center">
+            <div class="text-lg font-bold">CM</div>
             <nav>
                 <button class="px-4" onclick="showSection('play')">Play</button>
                 <button class="px-4" onclick="showSection('trade')">Trade</button>
@@ -34,29 +22,22 @@ fitting place/background sprites
             </nav>
         </header>
 
-        <div id="play" class="grid grid-cols-2 gap-4 m-5 p-5">
-            <div class="col-span-1 m-5 p-5">
-                <div class="col-span-1">
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('toaster'); Render(currentMiners, currentBg)">Add Toaster</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('raspberry_pi'); Render(currentMiners, currentBg)">Add Raspberry</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('notebook'); Render(currentMiners, currentBg)">Add Notebook</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('gamer_rig'); Render(currentMiners, currentBg)">Add Gamer Rig</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('gpu_rack'); Render(currentMiners, currentBg)">Add GPU Rack</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('asic_solo'); Render(currentMiners,currentBg)">Add ASIC Solo</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('asic_rack'); Render(currentMiners, currentBg)">Add ASIC Rack</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('hydro_farm'); Render(currentMiners, currentBg)">Add Hydro Farm</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('quantum'); Render(currentMiners, currentBg)">Add Quantum</button>
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.push('quantum_cluster'); Render(currentMiners, currentBg)">Add Quantum Cluster</button>
-                    <button class="bg-red-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentMiners.pop(); Render(currentMiners, currentBg)">Remove Miner</button>
-                    <button class="bg-red-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="Pop(2)">Pop</button>
-                    <button class="bg-green-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) - 1 + availableBackgroundImages.length) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">
-                        Previous Facility
-                    </button>
-                    <button class="bg-green-500 text-white font-bold py-2 px-4 m-5 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) + 1) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">Next Facility</button>
+        <div id="play" class="grid grid-cols-2 gap-4 m-5">
+            <div class="col-span-1">
+                <h2 class="text-xl">Mining Equipment</h2>
+                <div id="mining-buttons" class="flex flex-col">
+                    <!-- Dynamic buttons will be inserted here -->
                 </div>
+                <button class="bg-red-500 text-white py-2 px-4 m-2 rounded" onclick="currentMiners.pop(); Render(currentMiners, currentBg)">Remove Miner</button>
+                <button class="bg-red-500 text-white py-2 px-4 m-2 rounded" onclick="Pop(2)">Pop Effect</button>
+                <button class="bg-green-500 text-white py-2 px-4 m-2 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) - 1 + availableBackgroundImages.length) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">
+                    Previous Facility
+                </button>
+                <button class="bg-green-500 text-white py-2 px-4 m-2 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) + 1) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">Next Facility</button>
             </div>
 
-            <div class="col-span-1 m-5 p-5">
+            <div class="col-span-1">
+                <h2 class="text-xl">Mining Facility</h2>
                 <div id="zim" style="width: 100%; height: 100%; aspect-ratio: 1"></div>
             </div>
         </div>
@@ -72,12 +53,36 @@ fitting place/background sprites
         </div>
 
         <script>
+            let availableMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+            let availableBackgroundImages = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
+            let currentMiners = ['quantum_cluster', 'toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+            let currentBg = 'bg1';
+
             function showSection(section) {
                 document.getElementById('play').classList.add('hidden');
                 document.getElementById('trade').classList.add('hidden');
                 document.getElementById('about').classList.add('hidden');
                 document.getElementById(section).classList.remove('hidden');
             }
+
+            function renderMiningButtons() {
+                const miningButtonsContainer = document.getElementById('mining-buttons');
+                miningButtonsContainer.innerHTML = ''; // Clear existing buttons
+
+                availableMiners.forEach((miner) => {
+                    const button = document.createElement('button');
+                    button.className = 'bg-blue-500 text-white py-2 px-4 m-2 rounded';
+                    button.innerText = `Add ${miner.replace('_', ' ')}`;
+                    button.onclick = () => {
+                        currentMiners.push(miner);
+                        Render(currentMiners, currentBg);
+                    };
+                    miningButtonsContainer.appendChild(button);
+                });
+            }
+
+            // Initial rendering of mining buttons
+            renderMiningButtons();
         </script>
     </body>
 </html>
