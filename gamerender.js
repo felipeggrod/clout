@@ -4,6 +4,8 @@ import met from 'https://zimjs.org/cdn/017/zim';
 var slotUpgrades = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
 var backgroundImages = ['bg1.png', 'bg2.png', 'bg3.png'];
 var background = 'bg2';
+var boardSize = { rows: 4, cols: 4 };
+var board;
 
 const zimDiv = document.getElementById('zim');
 const frame = new Frame({
@@ -35,34 +37,35 @@ function ready() {
         })
     ])
         .then(() => {
+            S.removeAllChildren();
             // Set the background image
-            const background = new Bitmap(backgroundImage).center();
-            S.addChild(background); // Add background to the board first
+            const backgroundBitmap = new Bitmap(backgroundImage).center();
+            S.addChild(backgroundBitmap); // Add background to the board first
 
             // Create the isometric board
-            const boardSize = 4;
             const cellSize = 100;
 
             const boardConfig = {
-                cols: boardSize,
-                rows: boardSize,
+                cols: boardSize.cols,
+                rows: boardSize.rows,
                 fill: false, // Disable fill completely
                 backgroundColor: 'rgba(0, 0, 255, 0.01)',
-                borderColor: 'rgba(255, 255, 255, 0.5)', // White borders
+                borderColor: 'rgba(255, 255, 255, 0.2)', // White borders
                 borderWidth: 3, // Thicker borders
                 isometric: true, // Make the board isometric
 
                 size: 80
             };
-            const board = new Board(boardConfig).center();
+            board = new Board(boardConfig).center();
             board.y += board.getBounds().height * 0.5; // Move board down by 30%
+            if (background == 'bg2') board.y += board.getBounds().height * 0.1;
 
             // board.alpha = 0.5;
             S.addChild(board);
 
             let slot = 0;
-            for (let i = 0; i < boardSize; i++) {
-                for (let j = 0; j < boardSize; j++) {
+            for (let i = 0; i < boardSize.cols; i++) {
+                for (let j = 0; j < boardSize.rows; j++) {
                     // Create a container for the sprite
                     const container = new Container();
 
@@ -98,7 +101,7 @@ function ready() {
                         sprite.center(container);
 
                         if (img.src.includes('toaster_miner')) sprite.y *= 1.3;
-                        if (img.src.includes('pi_miner_one')) sprite.y *= 1.3;
+                        if (img.src.includes('raspberry_pi')) sprite.y *= 1.3;
                         if (img.src.includes('notebook')) sprite.y *= 1.5;
                         if (img.src.includes('gamer_rig')) sprite.y *= 1.5;
                         if (img.src.includes('gpu_rack')) sprite.y *= 1.5;
@@ -108,6 +111,7 @@ function ready() {
                         if (img.src.includes('quantum')) sprite.y *= 1.5;
 
                         // Add the container as a piece to the board
+                        console.log(`Adding ${img.src} at Row: ${i}, Column: ${j}, Current Board Size: ${boardSize.cols}x${boardSize.rows}`, container); // Debug log
                         board.add(container, j, i);
 
                         sprite.animate({
@@ -134,9 +138,6 @@ function ready() {
             board.on('click', (event) => {
                 console.log('Event object:', event); // Log the entire event object for debugging
                 console.log(`Cell clicked: Row ${event.target.boardRow}, Column ${event.target.boardCol}`); // Log the cell position
-
-                slotUpgrades.pop();
-                Render(slotUpgrades);
             });
 
             //Fit the gameview inside the html element
@@ -150,4 +151,33 @@ function ready() {
         .catch((error) => {
             console.error('Error loading images:', error);
         });
-} // end ready
+}
+
+function Pop(slotIndex) {
+    console.log('Pop function called with slotIndex:', slotIndex); // Log the slotIndex
+    const container = board.getChildAt(slotIndex); // Get the container for the specified slot
+    console.log('Container:', container); // Log the container
+
+    if (container) {
+        console.log('pop2'); // This will now log if container is valid
+        const sprite = container.children[0]; // Assuming the sprite is the first child
+        sprite.animate({
+            props: {
+                alpha: 0 // Fade out to white
+            },
+            time: 0.08, // 80ms to fade out
+            onComplete: () => {
+                sprite.animate({
+                    props: {
+                        alpha: 1 // Fade back to normal
+                    },
+                    time: 0.08 // 80ms to fade back
+                });
+            }
+        });
+    } else {
+        console.warn('No container found for slotIndex:', slotIndex); // Warn if container is not found
+    }
+}
+
+window.Pop = Pop; // Export popSlot to the window object

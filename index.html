@@ -20,15 +20,29 @@ fitting place/background sprites
         <meta name="viewport" content="width=device-width, user-scalable=no" />
     </head>
     <script>
-        let toasterArray = ['toaster'];
+        let availableMiners = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
+        let availableBackgroundImages = ['bg1', 'bg2', 'bg3'];
+        let currentMiners = ['toaster'];
+        let currentBg = 'bg1';
     </script>
     <body>
         <div class="grid grid-cols-3 gap-4">
-            <div class="col-span-1">
-                Column 1
-                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.push('toaster'); Render(toasterArray, 'bg1')">Add Toaster</button>
-                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.push('raspberry_pi'); Render(toasterArray, 'bg2')">Add Raspberry</button>
-                <button class="bg-red-500 text-white font-bold py-2 px-4 rounded" onclick="toasterArray.pop(); Render(toasterArray)">Remove Miner</button>
+            <div class="col-span-1 p-5">
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded m-5" onclick="currentMiners.push('toaster'); Render(currentMiners, 'bg1')">Add Toaster</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('raspberry_pi'); Render(currentMiners, 'bg2')">Add Raspberry</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('notebook'); Render(currentMiners, 'bg3')">Add Notebook</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('gamer_rig'); Render(currentMiners, 'bg1')">Add Gamer Rig</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('gpu_rack'); Render(currentMiners, 'bg2')">Add GPU Rack</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('asic_solo'); Render(currentMiners, 'bg3')">Add ASIC Solo</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('asic_rack'); Render(currentMiners, 'bg1')">Add ASIC Rack</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('hydro_farm'); Render(currentMiners, 'bg2')">Add Hydro Farm</button>
+                <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.push('quantum'); Render(currentMiners, 'bg3')">Add Quantum</button>
+                <button class="bg-red-500 text-white font-bold py-2 px-4 rounded" onclick="currentMiners.pop(); Render(currentMiners, 'bg3')">Remove Miner</button>
+                <button class="bg-red-500 text-white font-bold py-2 px-4 rounded" onclick="Pop(2)">Pop</button>
+                <button class="bg-green-500 text-white font-bold py-2 px-4 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) - 1 + availableBackgroundImages.length) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">
+                    Previous Facility
+                </button>
+                <button class="bg-green-500 text-white font-bold py-2 px-4 rounded" onclick="currentBg = availableBackgroundImages[(availableBackgroundImages.indexOf(currentBg) + 1) % availableBackgroundImages.length]; Render(currentMiners, currentBg)">Next Facility</button>
             </div>
 
             <div class="col-span-1">
