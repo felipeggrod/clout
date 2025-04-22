@@ -2,8 +2,8 @@ import zim from 'https://zimjs.org/cdn/017/zim_game';
 import met from 'https://zimjs.org/cdn/017/zim';
 
 var slotUpgrades = ['toaster', 'raspberry_pi', 'notebook', 'gamer_rig', 'gpu_rack', 'asic_solo', 'asic_rack', 'hydro_farm', 'quantum'];
-var backgroundImages = ['bg1.png', 'bg2.png', 'bg3.png'];
-var background = 'bg2';
+var backgroundImages = ['bg1.png', 'bg2.png', 'bg3.png', 'bg4.png', 'bg5.png'];
+var background = 'bg1';
 var boardSize = { rows: 4, cols: 4 };
 var board;
 
@@ -45,12 +45,29 @@ function ready() {
             // Create the isometric board
             const cellSize = 100;
 
+            if (background == 'bg1') {
+                boardSize = { rows: 2, cols: 2 }; // stinky bedroom //max2
+            }
+            if (background == 'bg2') {
+                boardSize = { rows: 2, cols: 2 }; // low profile storage //max4
+            }
+            if (background == 'bg3') {
+                boardSize = { rows: 3, cols: 3 }; // hidden power house //max6
+            }
+            if (background == 'bg4') {
+                boardSize = { rows: 3, cols: 3 }; // dad's garage //max9
+            }
+            if (background == 'bg5') {
+                boardSize = { rows: 3, cols: 3 };
+            }
+            console.log(`Background: '${background}', GRID SIZE: ${boardSize.rows} x ${boardSize.cols}`);
+
             const boardConfig = {
                 cols: boardSize.cols,
                 rows: boardSize.rows,
                 fill: false, // Disable fill completely
                 backgroundColor: 'rgba(0, 0, 255, 0.01)',
-                borderColor: 'rgba(255, 255, 255, 0.2)', // White borders
+                borderColor: 'rgba(255, 255, 255, 0.0002)', // White borders
                 borderWidth: 3, // Thicker borders
                 isometric: true, // Make the board isometric
 
@@ -111,7 +128,7 @@ function ready() {
                         if (img.src.includes('quantum')) sprite.y *= 1.5;
 
                         // Add the container as a piece to the board
-                        console.log(`Adding ${img.src} at Row: ${i}, Column: ${j}, Current Board Size: ${boardSize.cols}x${boardSize.rows}`, container); // Debug log
+                        console.log(`Adding ${img.src} at Row: ${i}, Column: ${j}, Current Board Size: ${boardSize.cols}x${boardSize.rows}`); // Debug log
                         board.add(container, j, i);
 
                         sprite.animate({
